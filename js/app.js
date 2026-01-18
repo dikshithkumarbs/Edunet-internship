@@ -940,23 +940,7 @@ class ResumeBuilder {
     }
 
     // Toggle mobile preview (for responsive view)
-    toggleMobilePreview() {
-        const mainLayout = document.querySelector('.main-layout');
-        const toggleBtn = document.getElementById('mobile-preview-toggle');
 
-        if (mainLayout) {
-            const isShowingPreview = mainLayout.classList.toggle('show-preview');
-
-            // Update button text
-            if (toggleBtn) {
-                if (isShowingPreview) {
-                    toggleBtn.textContent = '📝 Back to Form';
-                } else {
-                    toggleBtn.textContent = '👁️ Toggle Preview';
-                }
-            }
-        }
-    }
 
     // Set color theme
     setColorTheme(theme) {

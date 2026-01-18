@@ -28,10 +28,7 @@
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0.25rem;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    /* Removed absolute positioning for flex layout */
     z-index: 20;
     line-height: 1;
 }
@@ -45,15 +42,37 @@
 @media screen and (max-width: 768px) {
 
     .mobile-menu-btn,
+    /* Mobile Header Layout */
+    .app-header>div {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .mobile-menu-btn,
     .mobile-preview-toggle {
-        display: block;
-        /* Show on mobile */
+        display: flex;
+        position: static;
+        /* Remove absolute positioning */
+        transform: none;
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
     }
 
     .app-title {
-        margin-left: 2rem;
-        margin-right: 2rem;
-        /* Make space for the buttons */
+        flex: 1;
+        margin: 0;
+        /* Remove side margins */
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.9rem;
     }
 
     /* Hide controls bar by default on mobile */
