@@ -1,0 +1,233 @@
+/* Reference Templates Styles */
+
+/* ==========================================================================
+   Base Layout for Columns
+   ========================================================================== */
+.resume-columns {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.resume-sidebar {
+    width: 35%;
+    padding: 2rem;
+    flex-shrink: 0;
+}
+
+.resume-main-content {
+    flex: 1;
+    padding: 2rem;
+}
+
+/* ==========================================================================
+   Noah - Modern Sidebar (Left)
+   ========================================================================== */
+.template-noah {
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+}
+
+.template-noah .resume-header {
+    background: #2c3e50;
+    color: white;
+    padding: 3rem 2rem;
+    text-align: left;
+}
+
+.template-noah .resume-name {
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.template-noah .resume-contact {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.template-noah .resume-contact span {
+    color: inherit;
+}
+
+.template-noah .resume-columns {
+    display: flex;
+}
+
+.template-noah .resume-sidebar {
+    background: #f4f4f4;
+    order: 1;
+    /* Left side */
+}
+
+.template-noah .resume-main-content {
+    order: 2;
+}
+
+.template-noah .resume-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+}
+
+/* ==========================================================================
+   Anaisha - Clean Professional
+   ========================================================================== */
+.template-anaisha {
+    font-family: 'Lato', sans-serif;
+}
+
+.template-anaisha .resume-header {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-bottom: 3px solid #333;
+    margin-bottom: 2rem;
+    background-color: #f0f0f0;
+    /* Light gray header background from image */
+}
+
+.template-anaisha .resume-name {
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #2c3e50;
+}
+
+.template-anaisha .resume-section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+
+/* ==========================================================================
+   Prasha - Elegant Sidebar (Right)
+   ========================================================================== */
+.template-prasha {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.template-prasha .resume-header {
+    padding: 3rem 0;
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.template-prasha .resume-name {
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #444;
+    line-height: 1;
+}
+
+/* Prasha specific column overrides */
+.template-prasha .resume-columns {
+    align-items: flex-start;
+}
+
+.template-prasha .resume-sidebar {
+    background: #f9f9f9;
+    /* Light gray sidebar */
+    width: 30%;
+    padding-top: 0;
+}
+
+.template-prasha .resume-main-content {
+    padding-right: 3rem;
+}
+
+.template-prasha .resume-section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+/* ==========================================================================
+   Olivia - Bold Modern
+   ========================================================================== */
+.template-olivia {
+    font-family: 'Roboto', sans-serif;
+}
+
+.template-olivia .resume-header {
+    text-align: center;
+    padding: 2rem;
+    border-bottom: 4px solid #000;
+}
+
+.template-olivia .resume-name {
+    font-size: 2.2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.template-olivia .resume-section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 2px solid #000;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+/* ==========================================================================
+   Premium Minimal
+   ========================================================================== */
+.template-premium {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.template-premium .resume-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.template-premium .resume-name {
+    font-size: 2rem;
+    font-weight: 300;
+    /* Light weight */
+    text-transform: uppercase;
+    letter-spacing: 5px;
+}
+
+.template-premium .resume-section-title {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+    color: #555;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.template-premium .resume-section-title::before,
+.template-premium .resume-section-title::after {
+    content: '';
+    height: 1px;
+    background: #ddd;
+    flex: 1;
+}

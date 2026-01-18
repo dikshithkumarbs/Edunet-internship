@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume & Portfolio Builder - Create Professional Resumes in Minutes</title>
+    <meta name="description"
+        content="Build stunning resumes and portfolios with AI-powered content generation. Free, professional, and easy to use.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lato:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Nunito:wght@400;600;700&family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&family=Source+Sans+Pro:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/reference-templates.css">
+    <link rel="stylesheet" href="css/mobile-menu.css">
+
+    <!-- html2pdf.js for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div style="display: flex; align-items: center; justify-content: center; position: relative;">
+                <button id="mobile-menu-toggle" class="mobile-menu-btn" title="Toggle Menu">☰</button>
+                <h1 class="app-title">✨ AI Resume & Portfolio Builder</h1>
+            </div>
+            <p class="app-subtitle">Create professional resumes in minutes with AI-powered content generation</p>
+        </header>
+
+        <!-- Controls Bar -->
+        <div class="controls-bar">
+            <!-- GROUP 1: Design Controls (Left) -->
+            <div class="controls-group design-controls">
+                <!-- Template -->
+                <div class="template-selector" title="Select Template">
+                    <label for="template-select" class="control-label">Template:</label>
+                    <select id="template-select" class="form-select">
+                        <option value="ats">ATS-Optimized</option>
+                        <option value="skillsBased">Skills-Based</option>
+                        <option value="creative">Creative/Design</option>
+                        <optgroup label="🖼️ Reference Styles">
+                            <option value="noah">Modern Sidebar (Noah)</option>
+                            <option value="anaisha">Clean Professional (Anaisha)</option>
+                            <option value="prasha">Elegant Sidebar (Prasha)</option>
+                            <option value="olivia">Bold Modern (Olivia)</option>
+                            <option value="premium">Premium Minimal</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <!-- Font -->
+                <div class="font-selector" title="Select Font">
+                    <label for="font-select" class="control-label">Font:</label>
+                    <select id="font-select" class="form-select">
+                        <option value="inter">Inter (Modern)</option>
+                        <option value="georgia">Georgia (Classic)</option>
+                        <option value="arial">Arial (ATS-Safe)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- GROUP 2: Utility Tools (Middle) -->
+            <div class="controls-group utility-controls">
+                <div class="undo-redo-buttons">
+                    <button id="undo-btn" class="btn btn-secondary" title="Undo">↶</button>
+                    <button id="redo-btn" class="btn btn-secondary" title="Redo">↷</button>
+                </div>
+                <button id="theme-toggle-btn" class="theme-toggle-btn" title="Dark/Light Mode">🌙</button>
+                <button id="clear-btn" class="btn btn-secondary" title="Clear Trash">🗑️</button>
+                <button id="mobile-preview-toggle" class="mobile-preview-toggle">👁️</button>
+            </div>
+
+            <!-- GROUP 3: Export Actions (Right - High Priority) -->
+            <div class="controls-group export-controls">
+                <!-- Color (Moved here) -->
+                <div class="template-selector" title="Select Color Theme">
+                    <label for="color-theme-select" class="control-label">Color:</label>
+                    <select id="color-theme-select" class="form-select">
+                        <option value="default">Indigo</option>
+                        <option value="ocean">Ocean Blue</option>
+                        <option value="forest">Forest Green</option>
+                        <option value="sunset">Sunset Orange</option>
+                        <option value="midnight">Midnight Purple</option>
+                        <option value="rose">Rose Pink</option>
+                        <option value="custom">Custom...</option>
+                    </select>
+                </div>
+                <div class="color-picker-container" id="custom-color-container" style="display: none;">
+                    <input type="color" id="custom-color-picker" class="color-picker-input">
+                </div>
+
+                <button id="export-portfolio-btn" class="btn btn-ai" title="Create Website">🌐 Portfolio</button>
+                <button id="export-doc-btn" class="btn btn-secondary" title="Download Word 97-2003 (ATS-Safe)">📝
+                    DOC</button>
+                <button id="export-docx-btn" class="btn btn-secondary" title="Download Word">📝 DOCX</button>
+                <button id="export-pdf-btn" class="btn btn-primary" title="Download PDF">📄 PDF</button>
+                <button id="uniqueness-btn" class="btn btn-secondary" title="Check Resume Uniqueness">📊</button>
+                <button id="privacy-settings-btn" class="btn btn-secondary" title="Privacy Settings"
+                    onclick="PrivacyManager.showPrivacySettings()">🔒</button>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Form Panel (Left) -->
+            <div class="form-panel">
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <div class="progress-steps">
+                            <div class="step-indicator active" title="Personal Information"><span>1</span></div>
+                            <div class="step-indicator" title="Education"><span>2</span></div>
+                            <div class="step-indicator" title="Experience"><span>3</span></div>
+                            <div class="step-indicator" title="Skills"><span>4</span></div>
+                            <div class="step-indicator" title="Projects"><span>5</span></div>
+                            <div class="step-indicator" title="ATS Analysis"><span>6</span></div>
+                            <div class="step-indicator" title="Cover Letter"><span>7</span></div>
+                        </div>
+                        <div class="completion-badge" id="completion-badge">
+                            <span id="completion-percent">0%</span> Complete
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="completion-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Template Guidance - shows tips based on selected template -->
+                <div id="template-guidance" class="template-guidance" style="display: none;"></div>
+
+                <div id="step-1" class="form-step active">
+                    <div class="step-header"
+                        style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.25rem;">
+                        <h2 class="step-title">Personal Information</h2>
+                        <div style="display: flex; gap: 0.25rem;">
+                            <button onclick="ResumeParser.showImportModal()" class="btn btn-ai btn-sm"
+                                title="Import Previous Resume">📄 Import Resume</button>
+                            <button id="linkedin-import-trigger" class="btn btn-secondary btn-sm"
+                                title="Import from LinkedIn">📥 LinkedIn</button>
+                        </div>
+                    </div>
+                    <p class="step-description">Paste your existing resume or enter your contact information</p>
+
+                    <div id="linkedin-import-container"
+                        style="display: none; padding: 1.5rem; background: var(--bg-secondary); border-radius: var(--radius-lg); margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+                        <!-- LinkedIn import UI will be injected here -->
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="full-name" data-tooltip="Your full name for the resume">Full Name
+                            *</label>
+                        <input type="text" id="full-name" class="form-input" placeholder="Enter your full name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="job-headline"
+                            data-tooltip="Professional title (e.g., Software Developer)">Job Title / Headline</label>
+                        <input type="text" id="job-headline" class="form-input"
+                            placeholder="e.g., Senior Software Engineer">
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="email" data-tooltip="Professional email">Email *</label>
+                            <input type="email" id="email" class="form-input" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="phone" data-tooltip="Include country code">Phone</label>
+                            <input type="tel" id="phone" class="form-input" placeholder="Enter phone number">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="location"
+                            data-tooltip="City, State or City, Country">Location</label>
+                        <input type="text" id="location" class="form-input" placeholder="City, Country">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="linkedin" data-tooltip="Your LinkedIn URL">LinkedIn
+                            Profile</label>
+                        <input type="text" id="linkedin" class="form-input" placeholder="Your LinkedIn URL">
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="github">GitHub</label>
+                            <input type="text" id="github" class="form-input" placeholder="Your GitHub URL">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="portfolio">Portfolio Website</label>
+                            <input type="text" id="portfolio" class="form-input" placeholder="Your portfolio URL">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Education -->
+                <div id="step-2" class="form-step">
+                    <div class="step-header-row">
+                        <div>
+                            <h2 class="step-title">Education</h2>
+                            <p class="step-description">Add your educational background</p>
+                        </div>
+                        <button class="btn btn-ai" onclick="TranscriptParser.showModal()"
+                            title="Import from Transcript Text">
+                            📜 Import Transcript
+                        </button>
+                    </div>
+
+                    <div id="education-container">
+                        <div class="entry-item education-entry" draggable="true">
+                            <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
+                            <div class="entry-actions">
+                                <button class="quick-action-btn" onclick="app.duplicateEntry(this, 'education')"
+                                    data-tooltip="Duplicate this entry">📋 Duplicate</button>
+                                <button class="quick-action-btn"
+                                    onclick="this.closest('.education-entry').remove(); app.scheduleAutoSave();"
+                                    data-tooltip="Remove this entry">🗑️ Remove</button>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-tooltip="e.g., B.Sc, M.A.">Degree *</label>
+                                <input type="text" class="form-input edu-degree"
+                                    placeholder="e.g., Bachelor of Science">
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" data-tooltip="School or university name">Institution
+                                        *</label>
+                                    <input type="text" class="form-input edu-institution" placeholder="University Name">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" data-tooltip="City, State or Country">Location</label>
+                                    <input type="text" class="form-input edu-location" placeholder="City, State">
+                                </div>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Start Year</label>
+                                    <input type="text" class="form-input edu-start" placeholder="2020">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" data-tooltip="Year or 'Present'">End Year</label>
+                                    <input type="text" class="form-input edu-end" placeholder="2024">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" data-tooltip="e.g., 3.8/4.0">GPA
+                                    (Optional)</label>
+                                <input type="text" class="form-input edu-gpa" placeholder="Enter GPA">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="add-entry-btn" onclick="addEducationEntry()">+ Add Another Education</button>
+                </div>
+
+                <!-- Step 3: Experience -->
+                <div id="step-3" class="form-step">
+                    <h2 class="step-title">Work Experience</h2>
+                    <p class="step-description">Add your work experience and internships</p>
+
+                    <div id="experience-container">
+                        <div class="entry-item experience-entry" draggable="true">
+                            <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
+                            <div class="entry-actions">
+                                <button class="quick-action-btn" onclick="app.duplicateEntry(this, 'experience')"
+                                    data-tooltip="Duplicate this entry">📋 Duplicate</button>
+                                <button class="quick-action-btn"
+                                    onclick="this.closest('.experience-entry').remove(); app.scheduleAutoSave();"
+                                    data-tooltip="Remove this entry">🗑️ Remove</button>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-tooltip="Your job title">Job Title *</label>
+                                <input type="text" class="form-input exp-title" placeholder="Software Engineer Intern">
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label" data-tooltip="Company name">Company
+                                        *</label>
+                                    <input type="text" class="form-input exp-company" placeholder="Tech Company Inc.">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-input exp-location" placeholder="City, State">
+                                </div>
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Start Date</label>
+                                    <input type="text" class="form-input exp-start" placeholder="Jun 2023">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" data-tooltip="Month Year or 'Present'">End Date</label>
+                                    <input type="text" class="form-input exp-end" placeholder="Aug 2023">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" data-tooltip="Use numbers for impact">Key
+                                    Achievements (one per line)</label>
+                                <textarea class="form-textarea achievement-input" rows="3"
+                                    placeholder="• Key responsibility or achievement&#10;• Quantifiable result (e.g., increased efficiency by 20%)"></textarea>
+                            </div>
+
+                            <button class="btn btn-ai" onclick="enhanceAchievements(this)">✨ Enhance with AI</button>
+                        </div>
+                    </div>
+
+                    <button class="add-entry-btn" onclick="addExperienceEntry()">+ Add Another Experience</button>
+                </div>
+
+                <!-- Step 4: Skills, Languages & Awards -->
+                <div id="step-4" class="form-step">
+                    <h2 class="step-title">Skills, Languages & Awards</h2>
+                    <p class="step-description">List your technical skills, soft skills, languages, and achievements</p>
+
+                    <div class="form-group">
+                        <label class="form-label" data-tooltip="e.g., Python, JavaScript, React, SQL">Technical Skills
+                            (comma-separated)</label>
+                        <textarea id="technical-skills" class="form-textarea" rows="2"
+                            placeholder="Enter technical skills..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-tooltip="e.g., Leadership, Communication, Problem Solving">Soft
+                            Skills (comma-separated)</label>
+                        <textarea id="soft-skills" class="form-textarea" rows="2"
+                            placeholder="Enter soft skills..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-tooltip="e.g., English (Native), Spanish (Fluent)">Languages
+                            (comma-separated)</label>
+                        <textarea id="languages" class="form-textarea" rows="2"
+                            placeholder="English (Native), French (B2)..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-tooltip="Certifications, awards, or key achievements">Awards &
+                            Achievements (one per line)</label>
+                        <textarea id="awards" class="form-textarea" rows="3"
+                            placeholder="• Google IT Support Professional Certificate&#10;• Winner of XYZ Hackathon 2023"></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 5: Projects -->
+                <div id="step-5" class="form-step">
+                    <div class="step-header-row">
+                        <div>
+                            <h2 class="step-title">Projects</h2>
+                            <p class="step-description">Showcase your best projects</p>
+                        </div>
+                        <button class="btn btn-ai" onclick="GitHubImport.promptUsername()"
+                            title="Import projects from GitHub">
+                            🐙 Import from GitHub
+                        </button>
+                    </div>
+
+                    <div id="projects-container">
+                        <div class="entry-item project-entry" draggable="true">
+                            <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
+                            <div class="entry-actions">
+                                <button class="quick-action-btn" onclick="app.duplicateEntry(this, 'projects')"
+                                    data-tooltip="Duplicate this entry">📋 Duplicate</button>
+                                <button class="quick-action-btn"
+                                    onclick="this.closest('.project-entry').remove(); app.scheduleAutoSave();"
+                                    data-tooltip="Remove this entry">🗑️ Remove</button>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-tooltip="Project name">Project Name *</label>
+                                <input type="text" class="form-input proj-name" placeholder="E-commerce Platform">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label"
+                                    data-tooltip="Briefly describe what the project does and your role">Description</label>
+                                <textarea class="form-textarea proj-description" rows="2"
+                                    placeholder="Built a full-stack e-commerce platform with payment integration and user authentication"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" data-tooltip="React, Node.js, Python, AWS...">Technologies
+                                    Used (comma-separated)</label>
+                                <input type="text" class="form-input proj-technologies"
+                                    placeholder="React, Node.js, MongoDB, Stripe">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" data-tooltip="Demo or source code URL">Project
+                                    Link (Optional)</label>
+                                <input type="text" class="form-input proj-link"
+                                    placeholder="github.com/yourusername/project">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" data-tooltip="Key outcomes achieved">Key
+                                    Highlights (one per line)</label>
+                                <textarea class="form-textarea highlight-input" rows="2"
+                                    placeholder="• Implemented secure payment processing&#10;• Designed responsive UI"></textarea>
+                            </div>
+
+                            <button class="btn btn-ai" onclick="optimizeProject(this)">✨ Optimize with AI</button>
+                        </div>
+                    </div>
+
+                    <button class="add-entry-btn" onclick="addProjectEntry()">+ Add Another Project</button>
+                </div>
+
+                <!-- Step 6: Generate Summary & Review -->
+                <div id="step-6" class="form-step">
+                    <h2 class="step-title">Professional Summary</h2>
+                    <p class="step-description">Generate an AI-powered professional summary or write your own</p>
+
+                    <div class="form-grid" style="margin-bottom: 1rem; grid-template-columns: 1fr 1fr 1fr;">
+                        <div class="form-group">
+                            <label class="form-label" data-tooltip="For tailored content">Industry</label>
+                            <select id="summary-industry" class="form-select">
+                                <option value="technology">Technology & Software</option>
+                                <option value="finance">Finance & Banking</option>
+                                <option value="healthcare">Healthcare & Medical</option>
+                                <option value="marketing">Marketing & Communications</option>
+                                <option value="education">Education & Academia</option>
+                                <option value="consulting">Consulting & Strategy</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-tooltip="Writing style">Tone</label>
+                            <select id="summary-tone" class="form-select">
+                                <option value="professional">Professional</option>
+                                <option value="modern">Modern & Creative</option>
+                                <option value="academic">Academic/Formal</option>
+                                <option value="enthusiastic">Enthusiastic</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="display: flex; align-items: flex-end;">
+                            <button id="generate-summary-btn" class="btn btn-ai" style="width: 100%;">
+                                ✨ Generate AI Summary
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-with-actions">
+                            <label class="form-label">Professional Summary</label>
+                            <button class="grammar-check-btn" onclick="app.checkGrammar('summary-text')"
+                                title="Check grammar & tone">✍️ Grammar Check</button>
+                        </div>
+                        <textarea id="summary-text" class="form-textarea" rows="4"
+                            placeholder="Your professional summary will appear here... or write your own!"></textarea>
+                    </div>
+
+                    <div
+                        style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border-radius: var(--radius-lg); border: 2px solid rgba(99, 102, 241, 0.3);">
+                        <h3 style="margin-bottom: 1rem; color: var(--primary-color);">🎉 Your resume is ready!</h3>
+                        <p style="margin-bottom: 1rem; color: var(--text-secondary);">Review your resume in the preview
+                            panel on the right. You can:</p>
+                        <ul style="margin-left: 1.5rem; color: var(--text-secondary);">
+                            <li>Switch between different templates</li>
+                            <li>Download as PDF</li>
+                            <li>Print your resume</li>
+                            <li>Go back to edit any section</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 7: Cover Letter & ATS -->
+                <div id="step-7" class="form-step">
+                    <h2 class="step-title">📧 Cover Letter & ATS Optimization</h2>
+                    <p class="step-description">Generate tailored cover letters and optimize your resume for ATS systems
+                    </p>
+
+                    <!-- Job Information -->
+                    <div class="form-group">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" id="job-title" class="form-input" placeholder="Software Engineer">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Company Name</label>
+                        <input type="text" id="job-company" class="form-input" placeholder="Tech Company Inc.">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Job Description (Paste from job posting)</label>
+                        <textarea id="job-description" class="form-textarea" rows="5"
+                            placeholder="Paste the job description here to optimize your resume for ATS and generate a tailored cover letter..."></textarea>
+                    </div>
+
+                    <div class="form-grid" style="margin-bottom: 2rem;">
+                        <div class="form-group">
+                            <label class="form-label">Cover Letter Tone</label>
+                            <select id="cover-letter-tone" class="form-select">
+                                <option value="formal">Formal & Traditional</option>
+                                <option value="enthusiastic">Enthusiastic & Driven</option>
+                                <option value="modern">Modern & Direct</option>
+                                <option value="creative">Creative & Unique</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="display: flex; align-items: flex-end;">
+                            <button id="generate-cover-btn" class="btn btn-ai" style="width: 100%;">
+                                ✨ Generate
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- JD Match Feedback (New) -->
+                    <div id="jd-match-container" style="display: none; margin: 1rem 0;">
+                        <!-- Match results will be injected here -->
+                    </div>
+
+                    <!-- ATS Analysis -->
+                    <div
+                        style="margin: 2rem 0; padding: 1.5rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%); border-radius: var(--radius-lg); border: 2px solid rgba(99, 102, 241, 0.3);">
+                        <h3
+                            style="margin-bottom: 1rem; color: var(--primary-color); display: flex; align-items: center; gap: 0.5rem;">
+                            <span>📊</span> ATS Compatibility Score
+                        </h3>
+                        <div id="ats-score-display" style="text-align: center; padding: 1rem;">
+                            <div style="font-size: 3rem; font-weight: 700; color: var(--primary-color);" id="ats-score">
+                                --</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">out of
+                                100</div>
+                            <button id="analyze-ats-btn" class="btn btn-primary" style="width: 100%;">🔍 Analyze ATS
+                                Score</button>
+                        </div>
+                        <div id="ats-suggestions" style="margin-top: 1rem; display: none;">
+                            <h4 style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">Suggestions:</h4>
+                            <ul id="ats-suggestions-list"
+                                style="margin-left: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);"></ul>
+                        </div>
+                        <div id="ats-keywords" style="margin-top: 1rem; display: none;">
+                            <h4 style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">Missing Keywords:
+                            </h4>
+                            <div id="ats-keywords-list" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Cover Letter Generation -->
+                    <div style="margin-top: 2rem;">
+                        <h3 style="margin-bottom: 1rem; color: var(--text-primary);">✉️ Cover Letter Generator</h3>
+
+                        <div class="form-group">
+                            <label class="form-label">Select Tone</label>
+                            <select id="cover-letter-tone" class="form-select" style="width: 100%;">
+                                <option value="formal">Formal & Professional</option>
+                                <option value="friendly">Friendly & Approachable</option>
+                                <option value="confident">Confident & Direct</option>
+                                <option value="enthusiastic">Enthusiastic & Passionate</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <button id="generate-cover-letter-btn" class="btn btn-ai" style="width: 100%;">
+                                ✨ Generate Cover Letter with AI
+                            </button>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Generated Cover Letter</label>
+                            <textarea id="cover-letter-text" class="form-textarea" rows="12"
+                                placeholder="Your cover letter will appear here..."></textarea>
+                        </div>
+
+                        <div class="btn-group" style="margin-top: 1rem;">
+                            <button id="copy-cover-letter-btn" class="btn btn-secondary">📋 Copy to Clipboard</button>
+                            <button id="download-cover-letter-btn" class="btn btn-secondary">💾 Download as TXT</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="btn-group">
+                    <button id="prev-btn" class="btn btn-secondary">← Previous</button>
+                    <button id="next-btn" class="btn btn-primary">Next Step →</button>
+                </div>
+            </div>
+
+            <!-- Preview Panel (Right) -->
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <h3 class="preview-title">📄 Live Preview</h3>
+                    <div class="ats-score-mini" id="ats-score-mini" data-tooltip="ATS Compatibility Score">
+                        <span class="ats-label">ATS</span>
+                        <span class="ats-value" id="ats-score-value">--</span>
+                    </div>
+                </div>
+
+                <!-- Resume Preview -->
+                <div id="resume-preview">
+                    <div style="text-align: center; padding: 3rem; color: var(--text-tertiary);">
+                        <p style="font-size: 1.125rem; margin-bottom: 0.5rem;">👈 Start filling out your information</p>
+                        <p style="font-size: 0.875rem;">Your resume will appear here in real-time</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF Loading Indicator -->
+    <div id="pdf-loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p>Generating your PDF...</p>
+        </div>
+    </div>
+
+    <!-- Completion Celebration -->
+    <div class="overlay" id="celebration-overlay"></div>
+    <div id="completion-celebration">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+        <h2>Resume 100% Complete!</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Fantastic job! Your professional resume is now
+            fully optimized and ready to land you that dream job.</p>
+        <div class="btn-group" style="justify-content: center;">
+            <button class="btn btn-primary"
+                onclick="document.getElementById('completion-celebration').classList.remove('show'); document.getElementById('celebration-overlay').classList.remove('show');">Awesome!</button>
+            <button class="btn btn-secondary" onclick="app.exportPDF()">📥 Download PDF</button>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/error-boundary.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/huggingface-api.js"></script>
+
+    <!-- Feature Modules -->
+    <script src="js/resume-styles.js"></script>
+    <script src="js/smart-content.js"></script>
+    <script src="js/job-description-matcher.js"></script>
+    <script src="js/grammar-checker.js"></script>
+    <script src="js/linkedin-import.js"></script>
+    <script src="js/github-import.js"></script>
+    <script src="js/docx-export.js"></script>
+    <script src="js/privacy-manager.js"></script>
+    <script src="js/transcript-parser.js"></script>
+    <script src="js/resume-prompts.js"></script>
+    <script src="js/uniqueness-checker.js"></script>
+    <script src="js/undo-redo.js"></script>
+
+    <!-- Legacy/Existing Feature Modules -->
+    <script src="js/portfolio-generator.js"></script>
+    <script src="js/ai-engine.js"></script>
+    <script src="js/ats-optimizer.js"></script>
+    <script src="js/cover-letter-generator.js"></script>
+    <script src="js/templates.js"></script>
+    <script src="js/pdf-generator.js"></script>
+
+    <!-- Resume Parser - Import/Parse existing resumes -->
+    <script src="js/resume-parser.js"></script>
+
+    <!-- App Entry Point -->
+    <script src="js/app.js"></script>
+
+    <!-- Helper Functions for Dynamic Entry Addition -->
+    <script>
+        function addEducationEntry() {
+            const container = document.getElementById('education-container');
+            const newEntry = document.querySelector('.education-entry').cloneNode(true);
+
+            // Clear all inputs
+            newEntry.querySelectorAll('input').forEach(input => input.value = '');
+
+            container.appendChild(newEntry);
+            app.scheduleAutoSave();
+        }
+
+        function addExperienceEntry() {
+            const container = document.getElementById('experience-container');
+            const newEntry = document.querySelector('.experience-entry').cloneNode(true);
+
+            // Clear all inputs
+            newEntry.querySelectorAll('input, textarea').forEach(input => input.value = '');
+
+            container.appendChild(newEntry);
+            app.scheduleAutoSave();
+        }
+
+        function addProjectEntry() {
+            const container = document.getElementById('projects-container');
+            const newEntry = document.querySelector('.project-entry').cloneNode(true);
+
+            // Clear all inputs
+            newEntry.querySelectorAll('input, textarea').forEach(input => input.value = '');
+
+            container.appendChild(newEntry);
+            app.scheduleAutoSave();
+        }
+
+        async function enhanceAchievements(button) {
+            const entry = button.closest('.experience-entry');
+            const title = entry.querySelector('.exp-title').value;
+            const company = entry.querySelector('.exp-company').value;
+            const achievementsInput = entry.querySelector('.achievement-input');
+
+            if (!title || !company) {
+                alert('Please fill in job title and company first');
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = '⏳ Enhancing...';
+
+            const enhanced = await aiEngine.generateAchievements(title, company, achievementsInput.value || 'General responsibilities');
+            achievementsInput.value = enhanced.replace(/^- /gm, '• ');
+
+            button.disabled = false;
+            button.textContent = '✨ Enhance with AI';
+
+            app.scheduleAutoSave();
+        }
+
+        async function optimizeProject(button) {
+            const entry = button.closest('.project-entry');
+            const projectName = entry.querySelector('.proj-name').value;
+            const description = entry.querySelector('.proj-description').value;
+            const technologies = entry.querySelector('.proj-technologies').value.split(',').map(t => t.trim());
+
+            if (!projectName || !description) {
+                alert('Please fill in project name and description first');
+                return;
+            }
+
+            button.disabled = true;
+            button.textContent = '⏳ Optimizing...';
+
+            const optimized = await aiEngine.optimizeProjectDescription(projectName, description, technologies);
+            entry.querySelector('.proj-description').value = optimized;
+
+            button.disabled = false;
+            button.textContent = '✨ Optimize with AI';
+
+            app.scheduleAutoSave();
+        }
+    </script>
+</body>
+
+</html>

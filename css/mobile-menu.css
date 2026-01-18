@@ -1,0 +1,64 @@
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
+    /* Hidden by default on desktop */
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    margin-right: 0.5rem;
+    line-height: 1;
+    position: absolute;
+    left: 0;
+}
+
+.mobile-menu-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-sm);
+}
+
+/* Mobile Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .mobile-menu-btn {
+        display: block;
+        /* Show on mobile */
+    }
+
+    .app-title {
+        margin-left: 2rem;
+        /* Make space for the button */
+    }
+
+    /* Hide controls bar by default on mobile */
+    .controls-bar {
+        max-height: 0;
+        overflow: hidden;
+        padding: 0;
+        border-bottom: none;
+        transition: max-height 0.3s ease-out, padding 0.3s ease;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* Show controls bar when active */
+    .controls-bar.show {
+        max-height: 500px;
+        /* Arbitrary large height for transition */
+        padding: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+        overflow-y: auto;
+    }
+
+    /* Adjust controls layout for mobile menu */
+    .controls-bar.show .controls-group {
+        flex-direction: row;
+        /* Keep groups horizontal */
+        flex-wrap: wrap;
+        /* customized wrap */
+        justify-content: flex-start;
+        margin-bottom: 0.5rem;
+        width: 100%;
+    }
+}
