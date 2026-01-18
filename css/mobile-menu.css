@@ -19,16 +19,41 @@
     border-radius: var(--radius-sm);
 }
 
+/* Mobile Preview Toggle */
+.mobile-preview-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+    line-height: 1;
+}
+
+.mobile-preview-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-sm);
+}
+
 /* Mobile Responsive Adjustments */
 @media screen and (max-width: 768px) {
-    .mobile-menu-btn {
+
+    .mobile-menu-btn,
+    .mobile-preview-toggle {
         display: block;
         /* Show on mobile */
     }
 
     .app-title {
         margin-left: 2rem;
-        /* Make space for the button */
+        margin-right: 2rem;
+        /* Make space for the buttons */
     }
 
     /* Hide controls bar by default on mobile */
